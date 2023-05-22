@@ -1,0 +1,13 @@
+numpy
+matplotlib 
+scikit-learn 
+pandas 
+ipython 
+ipykernel
+
+tavern 
+fastapi 
+unicorn 
+uvicorn 
+requests 
+openai

@@ -1,0 +1,25 @@
+version: '3'
+services:
+  python:
+    build: ./chatDBServer
+    container_name: fast-api-server
+    # restart: always
+    volumes:
+      - ./chatDBServer:/app
+    ports:
+      - 8080:8080
+    working_dir: /app
+    command: uvicorn chatDBServer.main:app --reload  --host 0.0.0.0 --port 8080
+
+
+  node:
+    build: ./chatGUI
+    tty: true
+    volumes:
+      - ./chatGUI:/app
+    ports:
+      - 5173:5173
+    working_dir: /app/ChatGUI-project
+    depends_on:
+      - python
+    command: yarn dev
