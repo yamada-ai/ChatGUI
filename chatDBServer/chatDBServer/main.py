@@ -130,13 +130,13 @@ def convert_weba_to_wav(weba_file, wav_file):
 async def transcribe_audio(audio_blob: UploadFile):
     try:
         # 音声ファイルを一時ファイルに保存
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp, tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp2:
             tmp_path = tmp.name
             shutil.copyfileobj(audio_blob.file, tmp)
-            print(tmp_path, tmp.name)
-        
-        wav_path = "/tmp/temp.wav"
-        convert_weba_to_wav(tmp_path, wav_path)
+            wav_path = tmp2.name
+            convert_weba_to_wav(tmp_path, wav_path)
+
+            print(tmp_path, wav_path)   
         
         # 音声ファイルを音声認識
         recognizer = sr.Recognizer()
