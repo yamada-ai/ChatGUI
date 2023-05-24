@@ -157,7 +157,7 @@ export async function postAudio(body):Promise<any>{
     }
     else{
         return {
-            "transcription" : "Errpr : <認識に失敗しました>"
+            "transcription" : "Error : <認識に失敗しました>"
         }
     }
 }

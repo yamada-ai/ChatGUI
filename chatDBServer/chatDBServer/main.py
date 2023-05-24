@@ -126,12 +126,15 @@ def convert_weba_to_wav(weba_file, wav_file):
     audio.export(wav_file, format="wav")
 
 
+from chatDBServer.api.core.response import convert_for_response, bad_response
+
 @app.post("/api/transcribe")
 async def transcribe_audio(audio_blob: UploadFile):
     try:
         # 音声ファイルを一時ファイルに保存
         with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp, tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp2:
             tmp_path = tmp.name
+            
             shutil.copyfileobj(audio_blob.file, tmp)
             wav_path = tmp2.name
             convert_weba_to_wav(tmp_path, wav_path)
@@ -146,10 +149,11 @@ async def transcribe_audio(audio_blob: UploadFile):
             transcription = recognizer.recognize_google(audio_data, language="ja-JP")
 
         # 一時ファイルを削除
-        os.remove(tmp_path)
-        os.remove(wav_path)
+        # os.remove(tmp_path)
+        # os.remove(wav_path)
 
-        return {"transcription": transcription}
+        # return {"transcription": transcription}
+        return convert_for_response({"transcription": transcription})
      
     except Exception as e:
         import traceback
@@ -157,4 +161,5 @@ async def transcribe_audio(audio_blob: UploadFile):
         print("Error:", str(e))
         print(traceback.format_exc())
         print("\n\n\n")
-        return {"error": str(e)}
+        # return {"error": str(e)}
+        return convert_for_response( {"error": str(e)})
