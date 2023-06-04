@@ -4,6 +4,6 @@ chatDBServer/chatDBServer/DB
 
 __pycache__/
 
-chatGUI/ChatGUI-project/src/setting.tsx
+chatGUI/src/setting.tsx
 node_modules/
 *.mp3

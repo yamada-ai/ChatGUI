@@ -19,7 +19,7 @@ services:
       - ./chatGUI:/app
     ports:
       - 5173:5173
-    working_dir: /app/ChatGUI-project
+    working_dir: /app
     depends_on:
       - python
     command: yarn dev

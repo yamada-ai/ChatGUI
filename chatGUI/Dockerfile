@@ -4,12 +4,12 @@ USER root
 
 WORKDIR /app
 
-COPY package*.json ./
+# COPY package*.json ./
 
-RUN npm install
+# RUN npm install
 
-WORKDIR /app/ChatGUI-project
+# WORKDIR /app/ChatGUI-project
 
-COPY package*.json ./
+# COPY package*.json ./
 
-RUN yarn install
+# RUN yarn install

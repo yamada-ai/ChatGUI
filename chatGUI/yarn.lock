@@ -14,11 +14,6 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
-"@cleandersonlobo/react-mic@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@cleandersonlobo/react-mic/-/react-mic-1.2.0.tgz#0e3c0cfc66b76ccbb23e9004f499b4dad34bc2df"
-  integrity sha512-PH04n7BUUA3w6jjtwgXhy9lWni0eJy6Sn3/v7yPPEZRBdknTkA0WwzUPZtjjmJKDzuTphdZTxo9Bt2SNcxx4GQ==
-
 "@emotion/hash@^0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.8.0.tgz#bbbff68978fefdbe68ccb533bc8cbe1d1afb5413"
