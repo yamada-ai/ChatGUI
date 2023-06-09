@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // import { About } from "../component/About";
 // import { Contact } from "../component/Contact";
 import { ChatGUI } from "../component/ChatGUI";
+import { PatientSelector } from "../component/PatientSelector";
 import { Login } from '../component/Login'
 
 import { UserContextProvider } from "../contexts"
@@ -15,6 +16,7 @@ export const RouterConfig = () => {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/chat" element={<ChatGUI />} />
+                        <Route path="/patient" element={<PatientSelector />} />
                         <Route path="/login" element={<Login />} />
                         {/* <Route path="/room/:room_id" element={<ChatGUI />} /> */}
                     </Routes>

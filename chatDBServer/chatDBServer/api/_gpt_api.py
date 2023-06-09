@@ -13,12 +13,7 @@ def get_api_response(param=None):
     res = requests.get(url=api_url)
     return res.json()["slip"]["advice"]
 
-def get_gpt_response(user_text:str, context:list):
-    context.append({
-        "role" : "user",
-        "content" : user_text
-    })
-
+def get_gpt_response(context:list):
     print(context)
 
     response = openai.ChatCompletion.create(

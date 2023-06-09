@@ -3,8 +3,8 @@ import sqlite3
 from chatDBServer.params import User, Room, Chat
 import dataclasses
 
-class chatDB:
-    def __init__(self, db_name="chatgui2.db") -> None:
+class ChatDB:
+    def __init__(self, db_name="chatgui-patient-test.db") -> None:
         self.table_user = "User"
         self.table_room = "Room"
         self.table_chat = "Chat"
@@ -17,13 +17,20 @@ class chatDB:
         self.user_items = {
             "user_id" : "INTEGER PRIMARY KEY AUTOINCREMENT",
             "user_name" : "varchar(128)",
+            # ユーザごとに，用意したシナリオIDをランダムに写像する
+            # 例 : シナリオID:0 -> ユーザAからは:6 で見える　
+            "patient_dict" : "varchar(2048)",
             # "user_icon"
         }
         self.room_items = {
             "room_id" : "INTEGER PRIMARY KEY AUTOINCREMENT",
             "user_id" : "int",
             "room_title" : "varchar(128)",
-            "room_created_at" : "datetime"
+            "room_created_at" : "datetime",
+            # チャットが終了しているか
+            # 0: 終了していない，1: 終了している
+            "is_end" : "int",
+            "patient_id" : "int"
         }
         self.chat_items = {
             "chat_id" : "INTEGER PRIMARY KEY AUTOINCREMENT",
@@ -120,7 +127,17 @@ class chatDB:
             print(e)
             # {"status code":-1, "message":"get id error"}
             return -1
-
+    
+    def get_user(self, user_id):
+        sql = "SELECT * FROM {0} where user_id='{1}'".format(self.table_user, user_id)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            return result
+        except Exception as e:
+            print(e)
+            # {"status code":-1, "message":"get id error"}
+            return {}
 
     def create_user(self, params:User):
         sql = "INSERT INTO {0} VALUES({1})".format(self.table_user, self.dataclass2sql(params))
@@ -162,6 +179,28 @@ class chatDB:
             return result
         except Exception as e:
             print(e)
+            return {}
+    
+    def read_rooms_order_patientID(self, user_id:int):
+        sql = "SELECT * FROM {0} WHERE user_id={1} ORDER BY {2}".format(self.table_room, user_id, "patient_id")
+        try:
+            self.cursor.execute(sql)
+            # self.connector.commit()
+            result = self.cursor.fetchall()
+            return result
+        except Exception as e:
+            print(e)
+            return {}
+    
+    def read_room(self, room_id:int):
+        sql = "SELECT * FROM {0} WHERE room_id={1}".format(self.table_room, room_id)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            return result
+        except Exception as e:
+            print(e)
+            # {"status code":-1, "message":"get id error"}
             return {}
     
     def read_chats(self, user_id:int, room_id:int):

@@ -1,4 +1,4 @@
-from chatDBServer.DB_wrapper import chatDB
+from chatDBServer.DB_wrapper import ChatDB
 from chatDBServer.api.core.response import convert_for_response, bad_response
 # from pokedix.domain.data_converter import convert_json
 from chatDBServer.params import updateRoom, Room
@@ -15,7 +15,7 @@ def decode_request(req:updateRoom):
 
 
 def handler(req:updateRoom):
-    chatdb = chatDB()
+    chatdb = ChatDB()
     try:
         room = decode_request(req)
         res = chatdb.update_room_title(room)

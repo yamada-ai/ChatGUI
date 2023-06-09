@@ -1,4 +1,4 @@
-from chatDBServer.DB_wrapper import chatDB
+from chatDBServer.DB_wrapper import ChatDB
 from chatDBServer.api.core.response import convert_for_response, bad_response
 # from pokedix.domain.data_converter import convert_json
 # from chatDBServer.params import createRoom, Room
@@ -6,7 +6,7 @@ from chatDBServer.utils import *
 
 
 def handler(user_name:str):
-    chatdb = chatDB()
+    chatdb = ChatDB()
     try:
         # room = decode_request(req)
         res = chatdb.get_user_id(user_name=user_name)

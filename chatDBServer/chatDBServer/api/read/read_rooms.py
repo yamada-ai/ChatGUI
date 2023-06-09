@@ -1,4 +1,4 @@
-from chatDBServer.DB_wrapper import chatDB
+from chatDBServer.DB_wrapper import ChatDB
 from chatDBServer.api.core.response import convert_for_response, bad_response
 # from pokedix.domain.data_converter import convert_json
 # from chatDBServer.params import createRoom, Room
@@ -17,10 +17,11 @@ from chatDBServer.generetor import *
 
 
 def handler(user_id:int):
-    chatdb = chatDB()
+    chatdb = ChatDB()
     try:
         # room = decode_request(req)
-        res = chatdb.read_rooms(user_id)
+        # 医療面接用
+        res = chatdb.read_rooms_order_patientID(user_id)
         # res_json = {"pokemon":[ convert_json(r) for r in res]}
         return convert_for_response([ generate_Room(r) for r in res])
     except Exception as e:

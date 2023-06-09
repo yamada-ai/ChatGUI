@@ -15,7 +15,7 @@ from chatDBServer.api.delete.delete_room import handler as delete_room_handler
 from chatDBServer.params import *
 
 
-from chatDBServer.DB_wrapper import chatDB
+from chatDBServer.DB_wrapper import ChatDB
 
 
 from fastapi import FastAPI, UploadFile
@@ -34,7 +34,7 @@ app.add_middleware(
     allow_headers=["*"], 
 )
 
-db = chatDB()
+db = ChatDB()
 db.create_all_tables()
 
 """

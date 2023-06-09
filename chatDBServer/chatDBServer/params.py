@@ -6,6 +6,7 @@ from decimal import Decimal
 class User:
     user_id:int
     user_name:str
+    patient_dict:str
 
 @dataclass(frozen=True)
 class Room:
@@ -13,6 +14,8 @@ class Room:
     user_id:int
     room_title: str
     room_created_at:str
+    is_end:int
+    patient_id:int
 
 @dataclass(frozen=True)
 class Chat:

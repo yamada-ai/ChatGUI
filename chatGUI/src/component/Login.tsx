@@ -60,7 +60,8 @@ export const Login = () => {
 		console.log("getUserID:", user_id_)
 		if(user_id_ > 0){
 			console.log("exist");
-			navigation("/chat/")
+			// navigation("/chat/")
+			navigation("/patient/")
 			login(user_id_);
 		}
 		else{
