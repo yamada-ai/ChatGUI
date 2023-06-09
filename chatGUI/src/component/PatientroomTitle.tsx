@@ -25,7 +25,8 @@ export const PatientroomTitle = (prop:Props) => {
     return (
         <>
             <div>
-                <button onClick={ ()=> clickRoom(prop.room_id)}>
+                <button className={"button container is-centered "+(prop.is_end? "is-black":"is-dark")} disabled={prop.is_end? true:false} 
+                onClick={ ()=> clickRoom(prop.room_id)}>
                     <p>{roomTitle}</p>
                 </button>
             </div>

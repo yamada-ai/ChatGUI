@@ -1,7 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts";
 import { Chat } from "./Chat";
-import { postChat, getChats, postAudio } from "../api_wrapper";
+import { postChat, getChats, postAudio, updatePatient } from "../api_wrapper";
 import { ReactMic } from "react-mic";
 
 export const Chatroom = () => {
@@ -16,8 +17,8 @@ export const Chatroom = () => {
 
     // 録音関係
     const [isRecording, setIsRecording] = useState(false);
-
-
+    
+    const navigation = useNavigate()
     const [toggleSend, switchSend] = useState(false);
 
     const clickRecordButton = async () => {
@@ -100,7 +101,15 @@ export const Chatroom = () => {
 
     }
 
-
+    const clickFinish = async() => {
+        const res = await updatePatient(user_id, room_id, 1);
+        console.log("click finish")
+        navigation("/patient/")
+        if(res===0){
+            setRoomTitle(roomTitle_temp)
+            
+        }
+    }
 
     if (room_id < 0) {
         return <></>
@@ -139,7 +148,12 @@ export const Chatroom = () => {
                                         mimeType="audio/webm"
                                     />
                                 </div>
-
+                            </div>
+                            {/* 終了ボタン */}
+                            <div className="column is-narrow">
+                                <button className="button has-background-danger-dark" style={{ width: "60px", height: "40px" }} onClick={() => clickFinish()}>
+                                    <p className="has-text-white">finish</p>
+                                </button>
                             </div>
                         </div>
                     </div>

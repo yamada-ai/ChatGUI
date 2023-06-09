@@ -36,6 +36,8 @@ export const ChatroomTitle = (prop:Props) => {
 
     const [isActive, setActive] = useState(false);
 
+    
+
     const clickRoom = (room_id:number) => {
         selectRoom (room_id)
         console.log("pushed room_id:", room_id)
@@ -53,7 +55,8 @@ export const ChatroomTitle = (prop:Props) => {
     const  clickUpdateRoom = async () => {
         const res = await updateRoom(user_id, prop.room_id, roomTitle);
         if(res===0){
-            setRoomTitle(roomTitle_temp)            
+            setRoomTitle(roomTitle_temp)
+             
         }
         setActive(false);
     }

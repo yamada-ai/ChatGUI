@@ -52,3 +52,8 @@ class updateRoom(BaseModel):
     user_id:int
     room_id:int
     new_room_title:str
+
+class updatePatient(BaseModel):
+    user_id:int
+    room_id:int
+    is_end:int

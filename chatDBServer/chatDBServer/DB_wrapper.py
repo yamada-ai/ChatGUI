@@ -238,6 +238,17 @@ class ChatDB:
         except Exception as e:
             print(e)
             return {"status code":-1}
+    
+    def update_patient_status(self, params:Room):        
+        # 更新
+        sql = "UPDATE {0} SET is_end={1} WHERE user_id={2} and room_id={3}".format(self.table_room, params.is_end, params.user_id, params.room_id)
+        try:
+            self.cursor.execute(sql)
+            self.connector.commit()
+            return {"status code":0}
+        except Exception as e:
+            print(e)
+            return {"status code":-1}
 
     def delete_room(self, user_id, room_id):
         # 権限確認

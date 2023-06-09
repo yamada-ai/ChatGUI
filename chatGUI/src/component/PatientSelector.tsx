@@ -22,12 +22,28 @@ export const  PatientSelector = () => {
     }, [])
 
     for (const r of rooms) {
-        list.push(<PatientroomTitle title={r.room_title} room_id={r.room_id} is_end={r.is_end} key={r.room_id} />);
+        list.push(
+            <div className="columns is-centered">
+                <div className="column is-three-fifths my-3 py-1">
+                    <PatientroomTitle title={r.room_title} room_id={r.room_id} is_end={r.is_end} key={r.room_id} />
+                </div>
+            </div>
+            
+        );
     }
 
     return(
         <>
-            <div style={{overflowY:"scroll"}}>
+            <div className="has-background-primary  py-4 pl-5">
+                <p className="has-text-white is-size-4 pb-3">
+                    患者を選択してください
+                </p>
+            </div>
+            
+            <div className="has-background-black" style={{width:"100%"}}>
+                {/* <div className="columns">
+                    
+                </div> */}
                 {list}
             </div>
         </>

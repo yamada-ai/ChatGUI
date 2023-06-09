@@ -67,6 +67,22 @@ export async function updateRoom(user_id:number, room_id:number, new_room_title:
     return status
 }
 
+export async function updatePatient(user_id:number, room_id:number, end_status:number):Promise<any>{
+    const body = {
+        "user_id" : user_id,
+        "room_id" : room_id,
+        "is_end" : end_status
+    }
+    const status = await client.put("/patient", body)
+        .then( res => {
+            return 0
+        })
+        .catch( res => {
+            return -1
+        })
+    return status
+}
+
 export async function getChats(user_id:number, room_id:number):Promise<any>{
     const response = await client.get("/chat/"+String(user_id)+"/"+String(room_id))
     const chats = JSON.parse(response.data)
