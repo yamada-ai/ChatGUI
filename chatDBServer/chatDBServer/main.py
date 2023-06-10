@@ -3,10 +3,12 @@
 from chatDBServer.api.create.create_user import handler as create_user_handler
 from chatDBServer.api.create.create_room import handler as create_room_handler
 from chatDBServer.api.create.create_chat import handler as create_chat_handler
+from chatDBServer.api.create.create_observation import handler as  create_observation_handler
 
 from chatDBServer.api.read.get_user_id import handler as get_user_id_handler
 from chatDBServer.api.read.read_rooms import handler as read_rooms_handler
 from chatDBServer.api.read.read_chats import handler as read_chats_handler
+from chatDBServer.api.read.read_observation import handler as read_observation_handler
 
 from chatDBServer.api.update.update_room import handler as update_room_handler
 from chatDBServer.api.update.update_patient import handler as update_patient_handler
@@ -70,6 +72,11 @@ def create_room(req: createRoom):
 def create_chat(req : createChat):
     return create_chat_handler(req)
 
+# 所見
+@app.post("/api/observation/")
+def create_chat(req : createObservation):
+    return create_observation_handler(req)
+
 @app.get("/api/user/{user_name}")
 def get_user_id(user_name):
     return get_user_id_handler(user_name)
@@ -79,8 +86,12 @@ def read_rooms(user_id):
     return read_rooms_handler(user_id)
 
 @app.get("/api/chat/{user_id}/{room_id}")
-def read_rooms(user_id, room_id):
+def read_chats(user_id, room_id):
     return read_chats_handler(user_id, room_id)
+
+@app.get("/api/observation/{user_id}/{room_id}")
+def read_observation(user_id, room_id):
+    return read_observation_handler(user_id, room_id)
 
 # UPDATE
 @app.put("/api/room")

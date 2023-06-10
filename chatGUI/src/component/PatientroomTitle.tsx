@@ -2,9 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts";
 
-import { deleteRoom, updateRoom } from "../api_wrapper";
-
-
 type Props = {
     room_id : number
 	title: string

@@ -27,6 +27,15 @@ class Chat:
     gpt_text:str
     chat_created_at:str
 
+@dataclass(frozen=True)
+class Observation:
+    obs_id:int
+    user_id:int
+    room_id:int
+    user_text:str
+    gpt_text:str
+    obs_created_at:str
+
 
 # リクエストでくるbodyたち
 from pydantic import BaseModel
@@ -47,6 +56,11 @@ class createChat(BaseModel):
     context:str
     # gpt_test:str
     # chat_created_at:str
+
+class createObservation(BaseModel):
+    user_id:int
+    room_id:int
+    user_text:str
 
 class updateRoom(BaseModel):
     user_id:int

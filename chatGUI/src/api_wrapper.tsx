@@ -122,6 +122,37 @@ export async function postChat(user_id:number, room_id:number, turn:number, user
         }
 }
 
+export async function postObservation(user_id:number, room_id:number, user_text:string):Promise<any>{
+    const body = {
+        "user_id" : user_id,
+        "room_id" : room_id,
+        "user_text" : user_text,
+    }
+    const status = await client.post("/observation", body)
+        .then( res => {
+            return 0
+        })
+        .catch( res => {
+            return -1
+        })
+
+    if(status===0){
+            const response = await client.get("/observation/"+String(user_id)+"/"+String(room_id))
+            const observations = JSON.parse(response.data)
+            const latest_observation = observations[observations.length-1]
+            return {
+                "obs_id": latest_observation.obs_id,
+                "gpt_text":latest_observation.gpt_text
+            }
+        }
+        else{
+            return {
+                "obs_id": -1,
+                "gpt_text": ""
+            }
+        }
+}
+
 export async function postUser(user_name:string):Promise<any>{
     const body = {
         "user_name" : user_name

@@ -1,6 +1,6 @@
 import json
 import sqlite3
-from chatDBServer.params import User, Room, Chat
+from chatDBServer.params import User, Room, Chat, Observation
 import dataclasses
 
 class ChatDB:
@@ -8,6 +8,7 @@ class ChatDB:
         self.table_user = "User"
         self.table_room = "Room"
         self.table_chat = "Chat"
+        self.table_observation = "Observation"
         
         # 
         self.db_path = "./chatDBServer/DB/" + db_name
@@ -43,15 +44,24 @@ class ChatDB:
             "gpt_text" : "varchar(2048)",
             "chat_created_at": "datetime"
         }
+        self.obs_items = {
+            "obs_id" : "INTEGER PRIMARY KEY AUTOINCREMENT",
+            "user_id" : "int",
+            "room_id" : "int",
+            "user_text" : "varchar(2048)",
+            "gpt_text" : "varchar(2048)",
+            "obs_created_at": "datetime"
+        }
 
         self.primary_dict = {
             self.table_user : "user_id",
             self.table_room : "room_id",
-            self.table_chat : "chat_id"
+            self.table_chat : "chat_id",
+            self.table_observation : "obs_id"
         }
 
-        self.tables = [self.table_user, self.table_room, self.table_chat]
-        self.items_dicts = [self.user_items, self.room_items, self.chat_items]
+        self.tables = [self.table_user, self.table_room, self.table_chat, self.table_observation]
+        self.items_dicts = [self.user_items, self.room_items, self.chat_items, self.obs_items]
     
     def create_table(self, table_name, items_dict):
         query_list = []
@@ -170,6 +180,17 @@ class ChatDB:
             print(e)
             return {"status code":-1}
     
+    def create_observation(self, params:Observation):
+        sql = "INSERT INTO {0} VALUES({1})".format(self.table_observation, self.dataclass2sql(params))
+        # print(sql)
+        try:
+            self.cursor.execute(sql)
+            self.connector.commit()
+            return {"status code":0}
+        except Exception as e:
+            print(e)
+            return {"status code":-1}
+    
     def read_rooms(self, user_id:int):
         sql = "SELECT * FROM {0} WHERE user_id={1} ORDER BY {2}".format(self.table_room, user_id, self.primary_dict[self.table_room])
         try:
@@ -209,6 +230,17 @@ class ChatDB:
         try:
             self.cursor.execute(sql)
             # self.connector.commit()
+            result = self.cursor.fetchall()
+            return result
+        except Exception as e:
+            print(e)
+            return {}
+    
+    def read_observations(self, user_id:int, room_id:int):
+        sql = "SELECT * FROM {0} WHERE user_id={1} and room_id={2} ORDER BY {3}".format(self.table_observation, user_id, room_id, self.primary_dict[self.table_observation])
+
+        try:
+            self.cursor.execute(sql)
             result = self.cursor.fetchall()
             return result
         except Exception as e:

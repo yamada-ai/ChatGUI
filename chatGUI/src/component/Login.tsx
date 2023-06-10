@@ -92,7 +92,7 @@ export const Login = () => {
 		}
 		const user = await postUser(newUserName)
 		if(user.user_id > 0 ){
-			navigation("/chat/")
+			navigation("/patient/")
 			login(user.user_id);
 		}
 

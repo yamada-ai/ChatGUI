@@ -102,13 +102,13 @@ export const Chatroom = () => {
     }
 
     const clickFinish = async() => {
-        const res = await updatePatient(user_id, room_id, 1);
+        
         console.log("click finish")
-        navigation("/patient/")
-        if(res===0){
-            setRoomTitle(roomTitle_temp)
+        navigation("/observation/")
+        // if(res===0){
+        //     setRoomTitle(roomTitle_temp)
             
-        }
+        // }
     }
 
     if (room_id < 0) {
@@ -163,7 +163,7 @@ export const Chatroom = () => {
                         <button className="button icon has-background-primary is-rounded has-text-white is-size-5" style={{ width: "120px", height: "40px" }} onClick={() => clickSendButton()}>
                             {/* <i className ="fas fa-user"></i> */}
                             <i className="fas fa-paper-plane"></i>
-                            <p className="ml-3 ">send</p>
+                            <p className="ml-3 ">Send</p>
                         </button>
                     </div>
                 </div>

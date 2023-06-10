@@ -6,7 +6,7 @@ class Prompt:
         # 設定概要
         - 患者(Patient:P)と医師(Doctor:D)が対話をする状況である
         - 
-        - GPTは患者(P)役として，医師(D)の発話に続く返答例を一つ挙げてよ。
+        - GPTは患者(P)役として，医師(D)の発話に続く返答例を一つ挙げよ。
         - なお，以下に続く「患者の背景」「患者の返答の条件」に逸脱しないことを条件とする
 
         # 患者の背景
@@ -32,6 +32,18 @@ class Prompt:
             "assistant" : 'P:"{0}"'
         }
 
+        self.observation_template = """
+        # 概要
+        - 「患者の背景」に対して，医師が推測した「医師の所見」が与えられる
+        -「 医師の所見」がどの程度「患者の背景」に合致するかを評点(0~100点)と，その評点の理由を記述せよ
+
+        # 患者の背景
+        「{0}」
+
+        # 医師の所見
+        「{1}」
+        """
+
     def apply_scenario(self, scenario) -> str:
         return self.scenario_template.format(scenario)
 
@@ -41,3 +53,6 @@ class Prompt:
         else:
             print("role:{0} was Not Found".format(role))
             return "ERROR"
+    
+    def apply_observation(self, scenario, observation):
+        return self.observation_template.format(scenario, observation)
