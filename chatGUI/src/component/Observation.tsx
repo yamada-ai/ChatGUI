@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts";
-import { useContext, useState } from "react";
-import { postObservation } from "../api_wrapper";
+import { useContext, useState, useEffect } from "react";
+import { postObservation, updatePatient, getObservation } from "../api_wrapper";
 // type Props = {
 //     room_id : number
 //     patient_id : number
@@ -14,6 +14,8 @@ export const  Observation = () => {
     const [userInput, setUserInput] = useState("")
     const [gptOutput, setGptOutput] = useState("")
 
+    const [done_send, setDoneSend]  = useState(false)
+
     const navigation = useNavigate()
     // const res = await updatePatient(user_id, room_id, 1);
 
@@ -21,30 +23,59 @@ export const  Observation = () => {
         const res =  await postObservation(user_id, room_id, userInput)
         if (res.obs_id > 0) {
             setGptOutput(res.gpt_text)
+            setDoneSend(true)
         }
     }
+
+    const clickComplete = async() => {
+        const res = await updatePatient(user_id, room_id, 1)
+        if(res===0){
+            navigation("/patient/")
+        }
+    }
+    
+    const clickCancel = () => {
+        navigation("/chat/")
+    }
+
+    useEffect( () => {
+        const getObservation_async = async() => {
+            const obs = await getObservation(user_id, room_id)
+            if(obs.obs_id >= 0){
+                setDoneSend(true)
+                setUserInput(obs.user_text)
+                setGptOutput(obs.gpt_text)
+            }
+        }
+        getObservation_async()
+    }, [])
 
     return(
         <>
         <div className="has-background-black" style={{height:"99vh"}}>
+            <div className="has-background-primary  py-4 pl-5">
+                <p className="has-text-white is-size-4 pb-3">
+                    所見を入力してください
+                </p>
+            </div>
             <div className="columns is-centered">
                 <div className="column is-three-fifths ">
                     <div  className="mt-4">
-                        <p >所見を入力してください</p>
+                        <p className="has-text-white is-size-4" >所見の入力(文字数 : {userInput.length})</p>
                     </div>
-                    <div className="level m-0" >
+                    {/* <div className="level m-0" >
                         <div className="level-right">
-                            <p className="level-item has-text-white" >文字数 : {userInput.length}</p>
+                            <p className="level-item has-text-white" ></p>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="mt-1 py-1">
-                        <textarea className="textarea" placeholder="" rows={10} value={userInput} onChange={(event) => setUserInput(event.target.value)}>
+                        <textarea className="textarea" placeholder="" rows={9} value={userInput} onChange={(event) => setUserInput(event.target.value)} readOnly={done_send? true:false}>
                         </textarea>
                     </div>
                     {/* ボタン1 */}
                     <div className="level" >
                         <div className="level-item mt-4 ">
-                            <button className="button icon has-background-primary is-rounded has-text-white is-size-5" style={{ width: "120px", height: "40px" }} onClick={() => clickSendButton()}>
+                            <button className="button icon has-background-primary is-rounded has-text-white is-size-5" style={{ width: "120px", height: "40px" }} onClick={() => clickSendButton()} disabled={done_send? true:false}>
                                 {/* <i className ="fas fa-user"></i> */}
                                 <i className="fas fa-paper-plane"></i>
                                 <p className="ml-3 ">Send</p>
@@ -53,24 +84,24 @@ export const  Observation = () => {
                     </div>
 
                     <div  className="mt-4">
-                        <p className="has-text-white">評価</p>
+                        <p className="has-text-white is-size-4">評価</p>
                     </div>
                     <div className="mt-1 py-1">
-                        <textarea className="textarea" placeholder="" rows={10} value={gptOutput} readOnly>
+                        <textarea className="textarea" placeholder="" rows={9} value={gptOutput} readOnly>
                         </textarea>
                     </div>
                     {/* ボタン2 */}
                     <div className="columns is-centered mt-5">
                         <div className="column is-half ">
                             <div className="columns is-centered">
-                                <button className="button is-light column is-four-fifths p-0">
+                                <button className="button is-light column is-four-fifths p-0" disabled={userInput.length>0? true:false} onClick={ () => clickCancel()}>
                                     Cancel
                                 </button>
                             </div>
                         </div>
                         <div className="column is-half ">
                             <div className="columns is-centered">
-                                <button className="button is-danger column is-four-fifths p-0 has-text-white">
+                                <button className="button is-danger column is-four-fifths p-0 has-text-white" disabled={done_send? false:true} onClick={ () => clickComplete()}>
                                     Complete
                                 </button>
                             </div>

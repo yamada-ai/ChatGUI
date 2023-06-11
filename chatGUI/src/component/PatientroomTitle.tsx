@@ -19,13 +19,25 @@ export const PatientroomTitle = (prop:Props) => {
         navigation("/chat/")
     }
 
+    const clickObsIcon = (room_id:number) => {
+        selectRoom (room_id)
+        console.log("pushed room_id:", room_id)
+        navigation("/observation/")
+    }
+
     return (
         <>
-            <div>
-                <button className={"button container is-centered "+(prop.is_end? "is-black":"is-dark")} disabled={prop.is_end? true:false} 
+            <div className="columns my-4 pl-3" style={{width:"100%"}}>  
+                <button className={"button column  mr-2 p-0 "+(prop.is_end? "is-black":"is-dark")} disabled={prop.is_end? true:false} 
                 onClick={ ()=> clickRoom(prop.room_id)}>
                     <p>{roomTitle}</p>
                 </button>
+
+                <div className="column is-narrow p-0 ">
+                    <button className ="button is-dark " style={{width:"40px", height:"40px"}} onClick={ () => clickObsIcon(prop.room_id)} disabled={prop.is_end? false:true}>
+                        <i className="fas fa-file"></i>
+					</button>
+                </div>
             </div>
         </>
     )

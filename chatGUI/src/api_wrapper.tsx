@@ -15,6 +15,18 @@ export async function getRooms(user_id:number):Promise<any>{
     return rooms
 }
 
+export async function getObservation(user_id:number, room_id:number):Promise<any>{
+    const response = await client.get("/observation/"+String(user_id)+"/"+String(room_id))
+    const observations = JSON.parse(response.data)
+    const latest_observation = observations[observations.length-1]
+    return {
+        "obs_id": latest_observation.obs_id,
+        "user_text" : latest_observation.user_text,
+        "gpt_text":latest_observation.gpt_text
+    }
+}
+
+
 export async function postNewRoom(user_id:number, room_title:string):Promise<any>{
     const body = {
         "user_id" : user_id,
@@ -142,12 +154,14 @@ export async function postObservation(user_id:number, room_id:number, user_text:
             const latest_observation = observations[observations.length-1]
             return {
                 "obs_id": latest_observation.obs_id,
+                "user_text" : latest_observation.user_text,
                 "gpt_text":latest_observation.gpt_text
             }
         }
         else{
             return {
                 "obs_id": -1,
+                "user_text" : "",
                 "gpt_text": ""
             }
         }
