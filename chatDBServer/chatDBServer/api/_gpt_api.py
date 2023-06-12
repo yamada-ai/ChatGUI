@@ -14,12 +14,23 @@ def get_api_response(param=None):
     return res.json()["slip"]["advice"]
 
 def get_gpt_response(context:list):
-    print(context)
+    # print(context)
 
     response = openai.ChatCompletion.create(
                 model=MODEL,
                 messages=context,
                 max_tokens=MAX_TOKENS
+    )
+    print("raw response:", response['choices'][0]['message']['content'])
+    return response['choices'][0]['message']['content']
+
+def get_gpt_obs_response(context:list):
+    # print(context)
+
+    response = openai.ChatCompletion.create(
+                model=MODEL,
+                messages=context,
+                max_tokens=OBSERVATION_TOKEN
     )
     print(response['choices'][0]['message']['content'])
     return response['choices'][0]['message']['content']

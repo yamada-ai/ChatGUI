@@ -9,6 +9,27 @@ from chatDBServer.utils import *
 import json
 import os
 
+import re
+
+def extract_text_between_brackets(text):
+    start_index = text.find('「')
+    end_index = text.find('」', start_index + 1)
+    
+    if start_index != -1 and end_index != -1:
+        return text[start_index + 1:end_index]
+    else:
+        return text
+
+def extract_text_between_quotes(text):
+    start_index = text.rfind('"')  # 最後から2番目の " を探す
+    print(start_index)
+    end_index = text.rfind('"', 0, start_index)  # 最後の " を探す
+    print(end_index)
+    
+    if start_index != -1 and end_index != -1:
+        return text[end_index + 1:start_index]
+    else:
+        return text
 
 
 def decode_request(req:createChat):
@@ -33,7 +54,12 @@ def decode_request(req:createChat):
         "role" : "user",
         "content" : prompter.apply_scenario(scenario)
     })
-    print("context_a", context_applied)
+    
+    context_adjusted = prompter.adjust_context(context_applied)
+    print("context_a", context_adjusted)
+    gpt_text = get_gpt_response(context_adjusted)
+    gpt_text = extract_text_between_brackets(gpt_text)
+    gpt_text = extract_text_between_quotes(gpt_text)
     chat = Chat(
         None,
         req.user_id,
@@ -41,7 +67,7 @@ def decode_request(req:createChat):
         req.turn,
         req.user_text,
         # 一旦これでヨシ！！
-        get_gpt_response(context_applied),
+        gpt_text,
         get_datetime_str()
     )
     return chat

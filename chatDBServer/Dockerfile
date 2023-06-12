@@ -16,6 +16,6 @@ RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
 
 RUN pip install -U ipython ipykernel
-RUN pip install -U tavern fastapi unicorn uvicorn requests openai speechrecognition python-multipart pydub ffmpeg-python
+RUN pip install -U tavern fastapi unicorn uvicorn requests openai speechrecognition python-multipart pydub ffmpeg-python tiktoken
 
 WORKDIR /app

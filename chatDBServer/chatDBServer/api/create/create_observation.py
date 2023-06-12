@@ -4,7 +4,7 @@ from chatDBServer.Prompt import Prompt
 from chatDBServer.api.core.response import convert_for_response, bad_response
 # from pokedix.domain.data_converter import convert_json
 from chatDBServer.params import createObservation, Observation
-from chatDBServer.api._gpt_api import get_gpt_response
+from chatDBServer.api._gpt_api import get_gpt_obs_response
 from chatDBServer.utils import *
 import json
 import os
@@ -26,7 +26,7 @@ def decode_request(req:createObservation):
         user_id=req.user_id,
         room_id=req.room_id,
         user_text=req.user_text,
-        gpt_text=get_gpt_response(context),
+        gpt_text=get_gpt_obs_response(context),
         obs_created_at=get_datetime_str()
     )
     
