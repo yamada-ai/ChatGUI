@@ -2,6 +2,7 @@ chatDBServer/gpt-test.ipynb
 chatDBServer/setting.py
 chatDBServer/chatDBServer/DB/*
 chatDBServer/chatDBServer/scenarios/*
+chatDBServer/chatDBServer/scenarios_original/*
 
 __pycache__/
 

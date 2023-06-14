@@ -4,7 +4,7 @@ from chatDBServer.params import User, Room, Chat, Observation
 import dataclasses
 
 class ChatDB:
-    def __init__(self, db_name="chatgui-patient-test.db") -> None:
+    def __init__(self, db_name="chatgui-patient-test2.db") -> None:
         self.table_user = "User"
         self.table_room = "Room"
         self.table_chat = "Chat"

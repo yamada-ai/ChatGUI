@@ -17,7 +17,7 @@ export const Chatroom = () => {
 
     // 録音関係
     const [isRecording, setIsRecording] = useState(false);
-    
+
     const navigation = useNavigate()
     const [toggleSend, switchSend] = useState(false);
 
@@ -101,13 +101,13 @@ export const Chatroom = () => {
 
     }
 
-    const clickFinish = async() => {
-        
+    const clickFinish = async () => {
+
         console.log("click finish")
         navigation("/observation/")
         // if(res===0){
         //     setRoomTitle(roomTitle_temp)
-            
+
         // }
     }
 
@@ -115,59 +115,75 @@ export const Chatroom = () => {
         return <></>
     }
     return (
-        <div style={{ width: "100%", height: "100%" }}>
-            {/* AIとユーザが対話する部分 */}
-            <div style={{ width: "100%", height: "80%" }}>
-                <div className="columns is-centered my-5" style={{ height: "100%" }} >
-                    <div className="column is-9 has-background-success-light" style={{ height: "100%", borderRadius: "10px", overflowY: "scroll" }}>
-                        {list}
-                        {chatTemp}
+        <div className="columns" style={{ width: "100%", height: "100%" }}>
+            <div className="column is-10" style={{ height: "100%" }}>
+                <div style={{ width: "100%", height: "100%" }}>
+                    {/* AIとユーザが対話する部分 */}
+                    <div style={{ width: "100%", height: "80%" }}>
+                        <div className="columns is-centered my-5" style={{ height: "100%" }} >
+                            <div className="column is-9 has-background-success-light" style={{ height: "100%", borderRadius: "10px", overflowY: "scroll" }}>
+                                {list}
+                                {chatTemp}
+                            </div>
+                        </div>
+
                     </div>
-                </div>
+                    {/* 入力部分 */}
+                    <div className="mt-3" style={{ width: "60", height: "120" }}>
+                        <div className="columns is-centered my-2" >
+                            <div className=" column is-three-fifths my-0">
+                                <div className="columns" >
+                                    {/* 入力フォーム */}
+                                    <input className="input column mt-3 mr-3" type="text" value={userInput} onChange={(event) => setUserInput(event.target.value)}>
 
-            </div>
-            {/* 入力部分 */}
-            <div className="mt-3" style={{ width: "60", height: "120" }}>
-                <div className="columns is-centered my-2" >
-                    <div className=" column is-three-fifths my-0">
-                        <div className="columns" >
-                            {/* 入力フォーム */}
-                            <input className="input column mt-3 mr-3" type="text" value={userInput} onChange={(event) => setUserInput(event.target.value)}>
-
-                            </input>
-                            {/* 録音 */}
-                            <div className="column is-narrow">
-                                <button className={"button  icon is-rounded " + (isRecording ? "has-background-danger" : "has-background-info ")} style={{ width: "40px", height: "40px" }} onClick={() => clickRecordButton()}>
-                                    <i className={"fas fa-" + (isRecording ? "stop" : "microphone")}></i>
-                                </button>
-                                <div style={{ display: "none" }}>
-                                    <ReactMic
-                                        record={isRecording}
-                                        // onData={onData}
-                                        onStop={onStop}
-                                        mimeType="audio/webm"
-                                    />
+                                    </input>
+                                    {/* 録音 */}
+                                    <div className="column is-narrow">
+                                        <button className={"button  icon is-rounded " + (isRecording ? "has-background-danger" : "has-background-info ")} style={{ width: "40px", height: "40px" }} onClick={() => clickRecordButton()}>
+                                            <i className={"fas fa-" + (isRecording ? "stop" : "microphone")}></i>
+                                        </button>
+                                        <div style={{ display: "none" }}>
+                                            <ReactMic
+                                                record={isRecording}
+                                                // onData={onData}
+                                                onStop={onStop}
+                                                mimeType="audio/webm"
+                                            />
+                                        </div>
+                                    </div>
+                                    {/* 終了ボタン */}
+                                    <div className="column is-narrow">
+                                        <button className="button has-background-danger-dark" style={{ width: "60px", height: "40px" }} onClick={() => clickFinish()}>
+                                            <p className="has-text-white">finish</p>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            {/* 終了ボタン */}
-                            <div className="column is-narrow">
-                                <button className="button has-background-danger-dark" style={{ width: "60px", height: "40px" }} onClick={() => clickFinish()}>
-                                    <p className="has-text-white">finish</p>
+                        </div>
+                        <div className="level" >
+                            <div className="level-item m-0 ">
+                                <button className="button icon has-background-primary is-rounded has-text-white is-size-5" style={{ width: "120px", height: "40px" }} onClick={() => clickSendButton()}>
+                                    {/* <i className ="fas fa-user"></i> */}
+                                    <i className="fas fa-paper-plane"></i>
+                                    <p className="ml-3 ">Send</p>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="level" >
-                    <div className="level-item m-0 ">
-                        <button className="button icon has-background-primary is-rounded has-text-white is-size-5" style={{ width: "120px", height: "40px" }} onClick={() => clickSendButton()}>
-                            {/* <i className ="fas fa-user"></i> */}
-                            <i className="fas fa-paper-plane"></i>
-                            <p className="ml-3 ">Send</p>
-                        </button>
+            </div>
+            {/* 対話フロー説明領域 */}
+            <div className="column" style={{ height: "100%" }}>
+                {/* <p>医療面接の流れ!"!</p> */}
+                <div className="coulmns is-centered mt-6" style={{ height: "100%" }}>
+                    <div className="coulumn is-10 has-background-success-light p-4" style={{ height: "70%", borderRadius: "10px"}}>
+                        <p>医療面接の流れ</p>
+                        <p>1. 挨拶</p>
+                        <p>2. クロージング</p>
                     </div>
                 </div>
             </div>
         </div>
+
     );
 };

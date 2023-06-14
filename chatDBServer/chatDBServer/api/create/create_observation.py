@@ -11,7 +11,7 @@ import os
 
 
 def decode_request(req:createObservation):
-    smanager = ScenarioManager()
+    smanager = ScenarioManager(spath="./chatDBServer/scenarios_original/")
     prompter = Prompt()
     scenario = smanager.read_patient_scenario(req.user_id, req.room_id)
 
