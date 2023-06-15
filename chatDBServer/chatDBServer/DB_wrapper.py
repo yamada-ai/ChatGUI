@@ -247,20 +247,7 @@ class ChatDB:
             print(e)
             return {}
     
-    def update_room_title(self, params:Room):
-        # # 権限確認
-        # sql = "SELECT user_id FROM {0} WHERE room_id={1}".format(self.table_room, params.room_id)
-        # try:
-        #     self.cursor.execute(sql)
-        #     result = self.cursor.fetchone()
-        #     user_id_ = result[0]
-        # except Exception as e:
-        #     print(e)
-        #     return {"status code":-3}
-        # # 権限なし
-        # if user_id_ != params.user_id:
-        #     return {"status code":-2}
-        
+    def update_room_title(self, params:Room):        
         # 更新
         sql = "UPDATE {0} SET room_title='{1}' WHERE user_id={2} and room_id={3}".format(self.table_room, params.room_title, params.user_id, params.room_id)
         try:
@@ -283,18 +270,6 @@ class ChatDB:
             return {"status code":-1}
 
     def delete_room(self, user_id, room_id):
-        # 権限確認
-        # sql = "SELECT user_id FROM {0} WHERE room_id={1}".format(self.table_room, room_id)
-        # try:
-        #     self.cursor.execute(sql)
-        #     result = self.cursor.fetchone()
-        #     user_id_ = result[0]
-        # except Exception as e:
-        #     print(e)
-        #     return {"status code":-3}
-        # # 権限なし
-        # if user_id_ != user_id:
-        #     return {"status code":-2}
         sql = "DELETE FROM {0} WHERE user_id={1} and room_id={2}".format(self.table_room, user_id, room_id)
         try:
             self.cursor.execute(sql)

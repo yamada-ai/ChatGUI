@@ -1,5 +1,5 @@
 - GET
-
+    - curl -X GET -H "Content-Type: application/json" -d localhost:8080/api/user/2
 - POST
     - curl -X POST -H "Content-Type: application/json" -d '{"user_name":"test1"}' localhost:8000/api/user
 
