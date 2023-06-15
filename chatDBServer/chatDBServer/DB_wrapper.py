@@ -1,22 +1,33 @@
 import json
-import sqlite3
+# import sqlite3
+import MySQLdb
 from chatDBServer.params import User, Room, Chat, Observation
 import dataclasses
 
 class ChatDB:
-    def __init__(self, db_name="chatgui-patient-test2.db") -> None:
+    def __init__(self) -> None:
         self.table_user = "User"
         self.table_room = "Room"
         self.table_chat = "Chat"
         self.table_observation = "Observation"
         
         # 
-        self.db_path = "./chatDBServer/DB/" + db_name
-        self.connector = sqlite3.connect(self.db_path)
+        # self.db_path = "./chatDBServer/DB/" + db_name
+        self.host = "db"
+        self.user = "docker"
+        self.passwd = "docker"
+        self.db_name = "chatgui-patient-test"
+
+        self.connector = MySQLdb.connect(
+            host=self.host,
+            user=self.user,
+            passwd=self.passwd,
+            db=self.db_name
+        )
         self.cursor = self.connector.cursor()
 
         self.user_items = {
-            "user_id" : "INTEGER PRIMARY KEY AUTOINCREMENT",
+            "user_id" : "INT AUTO_INCREMENT PRIMARY KEY",
             "user_name" : "varchar(128)",
             # ユーザごとに，用意したシナリオIDをランダムに写像する
             # 例 : シナリオID:0 -> ユーザAからは:6 で見える　
@@ -24,7 +35,7 @@ class ChatDB:
             # "user_icon"
         }
         self.room_items = {
-            "room_id" : "INTEGER PRIMARY KEY AUTOINCREMENT",
+            "room_id" : "INT AUTO_INCREMENT PRIMARY KEY",
             "user_id" : "int",
             "room_title" : "varchar(128)",
             "room_created_at" : "datetime",
@@ -34,7 +45,7 @@ class ChatDB:
             "patient_id" : "int"
         }
         self.chat_items = {
-            "chat_id" : "INTEGER PRIMARY KEY AUTOINCREMENT",
+            "chat_id" : "INT AUTO_INCREMENT PRIMARY KEY",
             "user_id" : "int",
             "room_id" : "int",
             "turn" : "int",
@@ -45,7 +56,7 @@ class ChatDB:
             "chat_created_at": "datetime"
         }
         self.obs_items = {
-            "obs_id" : "INTEGER PRIMARY KEY AUTOINCREMENT",
+            "obs_id" : "INT AUTO_INCREMENT PRIMARY KEY",
             "user_id" : "int",
             "room_id" : "int",
             "user_text" : "varchar(2048)",

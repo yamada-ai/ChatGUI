@@ -9,3 +9,5 @@ __pycache__/
 chatGUI/src/setting.tsx
 node_modules/
 *.mp3
+
+data/

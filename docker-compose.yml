@@ -12,6 +12,8 @@ services:
       - chat-network
     working_dir: /app
     command: uvicorn chatDBServer.main:app --reload  --host 0.0.0.0 --port 8080
+    depends_on:
+      - db
 
 
   front:
@@ -27,6 +29,23 @@ services:
     depends_on:
       - back
     command: yarn dev
+  
+  
+  db:
+    image: mysql:8.0.14
+    restart: always
+    ports:
+      - 13306:3306
+    volumes:
+      - ./data/db:/var/lib/mysql
+    networks:
+      - chat-network
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: chatgui-patient-test
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+    command:  --default-authentication-plugin=mysql_native_password
 
 networks:
   chat-network:
