@@ -23,6 +23,7 @@ from chatDBServer.DB_wrapper import ChatDB
 
 from fastapi import FastAPI, UploadFile
 from fastapi import Response
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 import speech_recognition as sr
@@ -92,6 +93,21 @@ def read_chats(user_id, room_id):
 @app.get("/api/observation/{user_id}/{room_id}")
 def read_observation(user_id, room_id):
     return read_observation_handler(user_id, room_id)
+
+@app.get("/api/img")
+def read_img_test():
+    import os
+    import random
+
+    image_path = "/img/"
+    image_names = os.listdir(image_path)
+    image_name = random.choice(image_names)
+    headers = {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0"
+    }
+    return FileResponse(image_path+image_name, headers=headers, media_type="image/png")
 
 # UPDATE
 @app.put("/api/room")

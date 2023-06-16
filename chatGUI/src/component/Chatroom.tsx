@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts";
 import { Chat } from "./Chat";
-import { postChat, getChats, postAudio, updatePatient } from "../api_wrapper";
+import { postChat, getChats, postAudio, updatePatient, getImg_test } from "../api_wrapper";
 import { ReactMic } from "react-mic";
 
 export const Chatroom = () => {
@@ -13,6 +13,8 @@ export const Chatroom = () => {
     const list = [];
     const [chatJson, setChatJson] = useState([])
     const [chatTemp, setChatTemp] = useState([])
+    const [imageSrc, setImageSrc] = useState('');
+
     const { user_id, room_id } = useContext(UserContext)
 
     // 録音関係
@@ -91,13 +93,19 @@ export const Chatroom = () => {
             setChatJson(gotChats)
             console.log("response", gotChats)
         }
+        const get_img_test_async = async() => {
+            const url = await getImg_test()
+            setImageSrc(url)
+            console.log("url", url)
+        }
+        get_img_test_async();
         getChats_async();
     }, [room_id, toggleSend])
 
     for (const c of chatJson) {
         // list.push(<p>{c.user_text}  {c.gpt_text}</p>);
         list.push(<Chat text={c.user_text} is_gpt={false} turn={c.turn} key={String(c.chat_id) + "-0"} />)
-        list.push(<Chat text={c.gpt_text} is_gpt={true} turn={c.turn} key={String(c.chat_id) + "-1"} />);
+        list.push(<Chat text={c.gpt_text} is_gpt={true} turn={c.turn} imageSrc={imageSrc} key={String(c.chat_id) + "-1"} />);
 
     }
 

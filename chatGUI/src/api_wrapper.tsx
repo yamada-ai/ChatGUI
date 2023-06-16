@@ -26,6 +26,20 @@ export async function getObservation(user_id:number, room_id:number):Promise<any
     }
 }
 
+export async function getImg_test():Promise<any>{
+    try{
+        const response = await axios.get(URL_API+"img/", {
+            responseType: 'blob',
+          })
+        const imageUrl = URL.createObjectURL(response.data);
+        return imageUrl
+    } catch(error){
+        console.error(error);
+    }
+    
+    
+}
+
 
 export async function postNewRoom(user_id:number, room_title:string):Promise<any>{
     const body = {
