@@ -4,26 +4,19 @@ import os
 import json
 
 class ScenarioManager:
-    def __init__(self, spath="./chatDBServer/scenarios/") -> None:
+    def __init__(self, spath="./chatDBServer/scenarios/", ipath="./chatDBServer/scenario-img.json") -> None:
         self.spath = spath
         self.chatdb = ChatDB()
+        with open(ipath, 'r') as file:
+            self.img_dict = json.load(file)
  
     def get_scenarios_list(self):
         return os.listdir(self.spath)
 
     # 指定したファイルの読み込み
     def read_patient_scenario(self, user_id:int, room_id:int)->str:
-        patient_id = -10
-        # patient_id取得
-        room = self.chatdb.read_room(room_id)
-        patient_id = room[-1]       
-        # userのdictを取得
-        user_t = self.chatdb.get_user(user_id)
-        patient_dict =  json.loads(user_t[2])
-        # print(str(patient_id) in patient_dict.keys())
-        if str(patient_id) in patient_dict.keys():
-            filename = patient_dict[str(patient_id)]
-            # print(filename)
+        filename = self.get_scenario_filename(user_id, room_id)
+        if filename != "":
             try:
                 with open(self.spath+filename, mode="r", encoding="utf_8_sig") as f:
                     contents = f.read()
@@ -31,5 +24,23 @@ class ScenarioManager:
                 print(e)
             return contents
         else:
-            print("patient_id:{0} was NOT FOUND in user:{1}".format(patient_id, user_id))
             return "Not Found"
+    
+    def get_scenario_filename(self, user_id:int, room_id:int) -> str:
+        room = self.chatdb.read_room(room_id)
+        # patient_id取得
+        patient_id = room[-1] 
+        user_t = self.chatdb.get_user(user_id)
+        # userのdictを取得
+        patient_dict =  json.loads(user_t[2])
+        if str(patient_id) in patient_dict.keys():
+            return patient_dict[str(patient_id)]
+        else:
+            print("patient_id:{0} was NOT FOUND in user:{1}".format(patient_id, user_id))
+            return ""
+
+    def get_image_from_scenario(self, sfile:str):
+        if sfile in  self.img_dict.keys():
+            return self.img_dict[sfile]
+        else:
+            return ""

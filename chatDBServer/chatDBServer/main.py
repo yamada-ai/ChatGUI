@@ -10,6 +10,8 @@ from chatDBServer.api.read.read_rooms import handler as read_rooms_handler
 from chatDBServer.api.read.read_chats import handler as read_chats_handler
 from chatDBServer.api.read.read_observation import handler as read_observation_handler
 
+from chatDBServer.api.read.read_img import handler as read_img_handler
+
 from chatDBServer.api.update.update_room import handler as update_room_handler
 from chatDBServer.api.update.update_patient import handler as update_patient_handler
 
@@ -94,7 +96,7 @@ def read_chats(user_id, room_id):
 def read_observation(user_id, room_id):
     return read_observation_handler(user_id, room_id)
 
-@app.get("/api/img")
+@app.get("/api/img/")
 def read_img_test():
     import os
     import random
@@ -107,7 +109,18 @@ def read_img_test():
         "Pragma": "no-cache",
         "Expires": "0"
     }
-    return FileResponse(image_path+image_name, headers=headers, media_type="image/png")
+    return FileResponse(image_path+image_name, headers=headers)
+
+@app.get("/api/img/{user_id}/{room_id}")
+def read_img(user_id, room_id):
+    image_name = read_img_handler(user_id, room_id)
+    headers = {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0"
+    }
+    image_path = "/img/"
+    return FileResponse(image_path+image_name, headers=headers)
 
 # UPDATE
 @app.put("/api/room")

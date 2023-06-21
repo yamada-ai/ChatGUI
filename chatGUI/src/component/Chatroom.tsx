@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts";
 import { Chat } from "./Chat";
-import { postChat, getChats, postAudio, updatePatient, getImg_test } from "../api_wrapper";
+import { postChat, getChats, postAudio, updatePatient, getImg } from "../api_wrapper";
 import { ReactMic } from "react-mic";
 
 export const Chatroom = () => {
@@ -93,12 +93,12 @@ export const Chatroom = () => {
             setChatJson(gotChats)
             console.log("response", gotChats)
         }
-        const get_img_test_async = async() => {
-            const url = await getImg_test()
+        const get_img_async = async() => {
+            const url = await getImg(user_id, room_id)
             setImageSrc(url)
             console.log("url", url)
         }
-        get_img_test_async();
+        get_img_async();
         getChats_async();
     }, [room_id, toggleSend])
 
@@ -187,7 +187,12 @@ export const Chatroom = () => {
                     <div className="coulumn is-10 has-background-success-light p-4" style={{ height: "70%", borderRadius: "10px"}}>
                         <p>医療面接の流れ</p>
                         <p>1. 挨拶</p>
-                        <p>2. クロージング</p>
+                        <p>2. 名前の確認と自己紹介</p>
+                        <p>3. 主訴と現病歴について質問</p>
+                        <p>4. 補足事項を質問</p>
+                        <p>5. 要約，確認</p>
+                        <p>6. 診断と治療方針の伝達</p>
+                        <p>7. クロージング</p>
                     </div>
                 </div>
             </div>

@@ -19,7 +19,8 @@ def get_gpt_response(context:list):
     response = openai.ChatCompletion.create(
                 model=MODEL,
                 messages=context,
-                max_tokens=MAX_TOKENS
+                max_tokens=MAX_TOKENS,
+                temperature=TEMPERATURE
     )
     print("raw response:", response['choices'][0]['message']['content'])
     return response['choices'][0]['message']['content']

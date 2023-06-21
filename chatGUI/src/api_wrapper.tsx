@@ -26,9 +26,9 @@ export async function getObservation(user_id:number, room_id:number):Promise<any
     }
 }
 
-export async function getImg_test():Promise<any>{
+export async function getImg(user_id:number, room_id:number):Promise<any>{
     try{
-        const response = await axios.get(URL_API+"img/", {
+        const response = await axios.get(URL_API+"img/"+String(user_id)+"/"+String(room_id), {
             responseType: 'blob',
           })
         const imageUrl = URL.createObjectURL(response.data);
@@ -36,8 +36,6 @@ export async function getImg_test():Promise<any>{
     } catch(error){
         console.error(error);
     }
-    
-    
 }
 
 
