@@ -109,11 +109,14 @@ class ChatDB:
                 continue
             # 数値
             if type_ == int:
-                sql_items.append(str(params_dict[p_key]))
+                # sql_items.append(str(params_dict[p_key]))
+                sql_items.append("%s")
             elif type_ == str:
-                sql_items.append("'"+params_dict[p_key]+"'")
+                # sql_items.append("'"+params_dict[p_key]+"'")
+                sql_items.append("%s")
             else:
-                sql_items.append("'"+params_dict[p_key]+"'")
+                # sql_items.append("'"+params_dict[p_key]+"'")
+                sql_items.append("%s")
         return ", ".join(sql_items)
 
     # def table2insert_syntax(self, table):
@@ -140,20 +143,22 @@ class ChatDB:
             return -1
     
     def get_user_id(self, user_name):
-        sql = "SELECT user_id FROM {0} where user_name='{1}'".format(self.table_user, user_name)
+        sql = "SELECT user_id FROM {0} WHERE user_name=%s".format(self.table_user)
         try:
-            self.cursor.execute(sql)
+            self.cursor.execute(sql, (user_name,))
             result = self.cursor.fetchone()
-            return result[0]
+            if result:
+                return result[0]
+            else:
+                return -1
         except Exception as e:
             print(e)
-            # {"status code":-1, "message":"get id error"}
             return -1
     
     def get_user(self, user_id):
-        sql = "SELECT * FROM {0} where user_id='{1}'".format(self.table_user, user_id)
+        sql = "SELECT * FROM {0} where user_id=%s".format(self.table_user)
         try:
-            self.cursor.execute(sql)
+            self.cursor.execute(sql, (user_id,))
             result = self.cursor.fetchone()
             return result
         except Exception as e:
@@ -164,7 +169,8 @@ class ChatDB:
     def create_user(self, params:User):
         sql = "INSERT INTO {0} VALUES({1})".format(self.table_user, self.dataclass2sql(params))
         try:
-            self.cursor.execute(sql)
+            values = tuple(params.__dict__.values())[1:]
+            self.cursor.execute(sql, values)
             self.connector.commit()
             return {"status code":0}
         except Exception as e:
@@ -174,7 +180,8 @@ class ChatDB:
     def create_room(self, params:Room):
         sql = "INSERT INTO {0} VALUES({1})".format(self.table_room, self.dataclass2sql(params))
         try:
-            self.cursor.execute(sql)
+            values = tuple(params.__dict__.values())[1:]
+            self.cursor.execute(sql, values)
             self.connector.commit()
             return {"status code":0}
         except Exception as e:
@@ -183,9 +190,11 @@ class ChatDB:
     
     def create_chat(self, params:Chat):
         sql = "INSERT INTO {0} VALUES({1})".format(self.table_chat, self.dataclass2sql(params))
-        # print(sql)
+        print("create chat sql ", sql)
+        print("values ", tuple(params.__dict__.values())[1:])
         try:
-            self.cursor.execute(sql)
+            values = tuple(params.__dict__.values())[1:]
+            self.cursor.execute(sql, values)
             self.connector.commit()
             return {"status code":0}
         except Exception as e:
@@ -194,65 +203,59 @@ class ChatDB:
     
     def create_observation(self, params:Observation):
         sql = "INSERT INTO {0} VALUES({1})".format(self.table_observation, self.dataclass2sql(params))
-        # print(sql)
         try:
-            self.cursor.execute(sql)
+            values = tuple(params.__dict__.values())[1:]
+            self.cursor.execute(sql, values)
             self.connector.commit()
             return {"status code":0}
         except Exception as e:
             print(e)
             return {"status code":-1}
     
-    def read_rooms(self, user_id:int):
-        sql = "SELECT * FROM {0} WHERE user_id={1} ORDER BY {2}".format(self.table_room, user_id, self.primary_dict[self.table_room])
+    def read_rooms(self, user_id: int):
+        sql = "SELECT * FROM {0} WHERE user_id=%s ORDER BY {1}".format(self.table_room, self.primary_dict[self.table_room])
         try:
-            self.cursor.execute(sql)
-            # self.connector.commit()
+            self.cursor.execute(sql, (user_id,))
             result = self.cursor.fetchall()
             return result
         except Exception as e:
             print(e)
             return {}
-    
-    def read_rooms_order_patientID(self, user_id:int):
-        sql = "SELECT * FROM {0} WHERE user_id={1} ORDER BY {2}".format(self.table_room, user_id, "patient_id")
+
+    def read_rooms_order_patientID(self, user_id: int):
+        sql = "SELECT * FROM {0} WHERE user_id=%s ORDER BY {1}".format(self.table_room, "patient_id")
         try:
-            self.cursor.execute(sql)
-            # self.connector.commit()
+            self.cursor.execute(sql, (user_id,))
             result = self.cursor.fetchall()
             return result
         except Exception as e:
             print(e)
             return {}
-    
-    def read_room(self, room_id:int):
-        sql = "SELECT * FROM {0} WHERE room_id={1}".format(self.table_room, room_id)
+
+    def read_room(self, room_id: int):
+        sql = "SELECT * FROM {0} WHERE room_id=%s".format(self.table_room)
         try:
-            self.cursor.execute(sql)
+            self.cursor.execute(sql, (room_id,))
             result = self.cursor.fetchone()
             return result
         except Exception as e:
             print(e)
-            # {"status code":-1, "message":"get id error"}
             return {}
-    
-    def read_chats(self, user_id:int, room_id:int):
-        sql = "SELECT * FROM {0} WHERE user_id={1} and room_id={2} ORDER BY {3}".format(self.table_chat, user_id, room_id, "turn")
 
+    def read_chats(self, user_id: int, room_id: int):
+        sql = "SELECT * FROM {0} WHERE user_id=%s AND room_id=%s ORDER BY {1}".format(self.table_chat, "turn")
         try:
-            self.cursor.execute(sql)
-            # self.connector.commit()
+            self.cursor.execute(sql, (user_id, room_id))
             result = self.cursor.fetchall()
             return result
         except Exception as e:
             print(e)
             return {}
-    
-    def read_observations(self, user_id:int, room_id:int):
-        sql = "SELECT * FROM {0} WHERE user_id={1} and room_id={2} ORDER BY {3}".format(self.table_observation, user_id, room_id, self.primary_dict[self.table_observation])
 
+    def read_observations(self, user_id: int, room_id: int):
+        sql = "SELECT * FROM {0} WHERE user_id=%s AND room_id=%s ORDER BY {1}".format(self.table_observation, self.primary_dict[self.table_observation])
         try:
-            self.cursor.execute(sql)
+            self.cursor.execute(sql, (user_id, room_id))
             result = self.cursor.fetchall()
             return result
         except Exception as e:
@@ -270,23 +273,23 @@ class ChatDB:
             print(e)
             return {"status code":-1}
     
-    def update_patient_status(self, params:Room):        
-        # 更新
-        sql = "UPDATE {0} SET is_end={1} WHERE user_id={2} and room_id={3}".format(self.table_room, params.is_end, params.user_id, params.room_id)
+    def update_patient_status(self, params: Room):
+    # 更新
+        sql = "UPDATE {0} SET is_end=%s WHERE user_id=%s and room_id=%s".format(self.table_room)
         try:
-            self.cursor.execute(sql)
+            self.cursor.execute(sql, (params.is_end, params.user_id, params.room_id))
             self.connector.commit()
-            return {"status code":0}
+            return {"status code": 0}
         except Exception as e:
             print(e)
-            return {"status code":-1}
+            return {"status code": -1}
 
     def delete_room(self, user_id, room_id):
-        sql = "DELETE FROM {0} WHERE user_id={1} and room_id={2}".format(self.table_room, user_id, room_id)
+        sql = "DELETE FROM {0} WHERE user_id=%s and room_id=%s".format(self.table_room)
         try:
-            self.cursor.execute(sql)
+            self.cursor.execute(sql, (user_id, room_id))
             self.connector.commit()
-            return {"status code":0}
+            return {"status code": 0}
         except Exception as e:
             print(e)
-            return {"status code":-1}
+            return {"status code": -1}
