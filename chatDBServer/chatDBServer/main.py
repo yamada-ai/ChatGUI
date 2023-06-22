@@ -76,7 +76,7 @@ def create_chat(req : createChat):
     return create_chat_handler(req)
 
 # 所見
-@app.post("/api/observation/")
+@app.post("/api/observation")
 def create_chat(req : createObservation):
     return create_observation_handler(req)
 
