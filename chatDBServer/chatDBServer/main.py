@@ -6,6 +6,7 @@ from chatDBServer.api.create.create_chat import handler as create_chat_handler
 from chatDBServer.api.create.create_observation import handler as  create_observation_handler
 
 from chatDBServer.api.read.get_user_id import handler as get_user_id_handler
+from chatDBServer.api.read.get_user import handler as get_user_handler
 from chatDBServer.api.read.read_rooms import handler as read_rooms_handler
 from chatDBServer.api.read.read_chats import handler as read_chats_handler
 from chatDBServer.api.read.read_observation import handler as read_observation_handler
@@ -83,6 +84,10 @@ def create_chat(req : createObservation):
 @app.get("/api/user/{user_name}")
 def get_user_id(user_name):
     return get_user_id_handler(user_name)
+
+@app.get("/api/user/info/{user_id}")
+def get_user(user_id):
+    return get_user_handler(user_id)
 
 @app.get("/api/room/{user_id}")
 def read_rooms(user_id):

@@ -176,7 +176,7 @@ class ChatDB:
         except Exception as e:
             print(e)
             return {"status code":-1}
-    
+
     def create_room(self, params:Room):
         sql = "INSERT INTO {0} VALUES({1})".format(self.table_room, self.dataclass2sql(params))
         try:

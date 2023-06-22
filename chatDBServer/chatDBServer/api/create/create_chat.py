@@ -11,27 +11,6 @@ import os
 
 import re
 
-def extract_text_between_brackets(text):
-    start_index = text.find('「')
-    end_index = text.find('」', start_index + 1)
-    
-    if start_index != -1 and end_index != -1:
-        return text[start_index + 1:end_index]
-    else:
-        return text
-
-def extract_text_between_quotes(text):
-    start_index = text.rfind('"')  # 最後から2番目の " を探す
-    print(start_index)
-    end_index = text.rfind('"', 0, start_index)  # 最後の " を探す
-    print(end_index)
-    
-    if start_index != -1 and end_index != -1:
-        return text[end_index + 1:start_index]
-    else:
-        return text
-
-
 def decode_request(req:createChat):
     smanager = ScenarioManager()
     prompter = Prompt()
@@ -58,8 +37,7 @@ def decode_request(req:createChat):
     context_adjusted = prompter.adjust_context(context_applied)
     print("context_a", context_adjusted)
     gpt_text = get_gpt_response(context_adjusted)
-    gpt_text = extract_text_between_brackets(gpt_text)
-    gpt_text = extract_text_between_quotes(gpt_text)
+    gpt_text = re.sub("(^[^\"「]*[\"「])|([\"」][^\"」]*$)", "", gpt_text)
     chat = Chat(
         None,
         req.user_id,

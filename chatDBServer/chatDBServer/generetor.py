@@ -1,5 +1,12 @@
 from chatDBServer.params import User, Room, Chat, Observation
 
+def generate_User(items):
+    user_items = list(User.__dataclass_fields__.keys())
+    user_json = {}
+    for item, key in zip(items, user_items):
+        user_json[key] = item 
+    return user_json
+
 
 def generate_Room(items):
     room_items = list(Room.__dataclass_fields__.keys())
