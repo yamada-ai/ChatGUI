@@ -162,7 +162,7 @@ import tempfile
 import os
 import wave
 import shutil
-
+import uuid
 from pydub import AudioSegment
 
 
@@ -175,13 +175,14 @@ from chatDBServer.api.core.response import convert_for_response, bad_response
 
 @app.post("/api/transcribe")
 async def transcribe_audio(audio_blob: UploadFile):
+    wav_filename = str(uuid.uuid4())+".wav"
     try:
         # 音声ファイルを一時ファイルに保存
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp, tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp2:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp, open("/wavs/"+wav_filename, mode="wb") as fwav:
             tmp_path = tmp.name
             
             shutil.copyfileobj(audio_blob.file, tmp)
-            wav_path = tmp2.name
+            wav_path = fwav.name
             convert_weba_to_wav(tmp_path, wav_path)
 
             print(tmp_path, wav_path)   
@@ -194,11 +195,11 @@ async def transcribe_audio(audio_blob: UploadFile):
             transcription = recognizer.recognize_google(audio_data, language="ja-JP")
 
         # 一時ファイルを削除
-        # os.remove(tmp_path)
+        os.remove(tmp_path)
         # os.remove(wav_path)
 
         # return {"transcription": transcription}
-        return convert_for_response({"transcription": transcription})
+        return convert_for_response({"transcription": transcription, "wav_filename":wav_filename})
      
     except Exception as e:
         import traceback

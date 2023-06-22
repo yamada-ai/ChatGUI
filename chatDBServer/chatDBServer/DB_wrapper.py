@@ -53,7 +53,8 @@ class ChatDB:
             # "is_bot" : "int",
             "user_text" : "varchar(2048)",
             "gpt_text" : "varchar(2048)",
-            "chat_created_at": "datetime"
+            "chat_created_at": "datetime",
+            "wav_name" : "varchar(100)"
         }
         self.obs_items = {
             "obs_id" : "INT AUTO_INCREMENT PRIMARY KEY",

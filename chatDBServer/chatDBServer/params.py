@@ -26,6 +26,7 @@ class Chat:
     user_text:str
     gpt_text:str
     chat_created_at:str
+    wav_name:str
 
 @dataclass(frozen=True)
 class Observation:
@@ -54,6 +55,7 @@ class createChat(BaseModel):
     # is_bot:int
     user_text:str
     context:str
+    wav_name:str
     # gpt_test:str
     # chat_created_at:str
 

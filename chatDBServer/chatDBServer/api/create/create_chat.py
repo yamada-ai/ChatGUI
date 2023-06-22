@@ -68,7 +68,8 @@ def decode_request(req:createChat):
         req.user_text,
         # 一旦これでヨシ！！
         gpt_text,
-        get_datetime_str()
+        get_datetime_str(),
+        wav_name=req.wav_name
     )
     return chat
 

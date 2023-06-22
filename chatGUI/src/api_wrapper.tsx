@@ -113,14 +113,16 @@ export async function getChats(user_id:number, room_id:number):Promise<any>{
     return chats
 }
 
-export async function postChat(user_id:number, room_id:number, turn:number, user_text:string, context:string):Promise<any>{
+export async function postChat(user_id:number, room_id:number, turn:number, user_text:string, context:string, wavFilename:string):Promise<any>{
     const body = {
         "user_id" : user_id,
         "room_id" : room_id,
         "turn" : turn,
         "user_text" : user_text,
-        "context" : context
+        "context" : context,
+        "wav_name" : wavFilename
     }
+    console.log("post wav:", wavFilename)
     const status = await client.post("/chat", body)
         .then( res => {
             return 0
@@ -225,12 +227,14 @@ export async function postAudio(body):Promise<any>{
         headers: { 'Content-Type': 'multipart/form-data' }
     })
     const transcription = JSON.parse(response.data)
+    console.log("wav : ",transcription.wav_filename);
     if("transcription" in transcription){
         return transcription
     }
     else{
         return {
-            "transcription" : "Error : <認識に失敗しました>"
+            "transcription" : "Error : <認識に失敗しました>",
+            "wav_filename" : ""
         }
     }
 }

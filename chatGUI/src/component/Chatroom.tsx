@@ -11,9 +11,10 @@ export const Chatroom = () => {
 
 
     const list = [];
-    const [chatJson, setChatJson] = useState([])
-    const [chatTemp, setChatTemp] = useState([])
+    const [chatJson, setChatJson] = useState([]);
+    const [chatTemp, setChatTemp] = useState([]);
     const [imageSrc, setImageSrc] = useState('');
+    const [wavFilename, setWavFilename] = useState('');
 
     const { user_id, room_id } = useContext(UserContext)
 
@@ -46,8 +47,9 @@ export const Chatroom = () => {
         formData.append('audio_blob', recordedDataBlob, 'recording.wav');
         const response = await postAudio(formData)
         // const transcription = response.transcription
-        console.log(response.transcription)
+        console.log(response.transcription,response.wav_filename )
         setUserInput(response.transcription)
+        setWavFilename(response.wav_filename)
     }
 
     const clickSendButton = async () => {
@@ -62,10 +64,11 @@ export const Chatroom = () => {
         console.log(user_id, room_id, nextTurn, userInput, get_contexts(nextTurn))
 
 
-        const res = await postChat(user_id, room_id, nextTurn, userInput, get_contexts(nextTurn))
+        const res = await postChat(user_id, room_id, nextTurn, userInput, get_contexts(nextTurn), wavFilename)
         if (res.chat_id > 0) {
             setUserInput("")
             switchSend(!toggleSend)
+            setWavFilename("");
         }
     }
 
