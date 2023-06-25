@@ -4,7 +4,7 @@ from chatDBServer.Prompt import Prompt
 from chatDBServer.api.core.response import convert_for_response, bad_response
 # from pokedix.domain.data_converter import convert_json
 from chatDBServer.params import createChat, Chat
-from chatDBServer.api._gpt_api import get_gpt_response
+from chatDBServer.api._gpt_api import get_gpt_response, get_api_response
 from chatDBServer.utils import *
 import json
 import os
@@ -37,6 +37,7 @@ def decode_request(req:createChat):
     context_adjusted = prompter.adjust_context(context_applied)
     print("context_a", context_adjusted)
     gpt_text = get_gpt_response(context_adjusted)
+    # gpt_text = get_api_response(context_adjusted)
     gpt_text = re.sub("(^[^\"「]*[\"「])|([\"」][^\"」]*$)", "", gpt_text)
     chat = Chat(
         None,

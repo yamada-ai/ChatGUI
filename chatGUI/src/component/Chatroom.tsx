@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { UserContext } from "../contexts";
 import { Chat } from "./Chat";
 import { postChat, getChats, postAudio, updatePatient, getImg } from "../api_wrapper";
@@ -15,6 +15,8 @@ export const Chatroom = () => {
     const [chatTemp, setChatTemp] = useState([]);
     const [imageSrc, setImageSrc] = useState('');
     const [wavFilename, setWavFilename] = useState('');
+
+    const containerRef = useRef(null);
 
     const { user_id, room_id } = useContext(UserContext)
 
@@ -121,7 +123,7 @@ export const Chatroom = () => {
 
         // }
     }
-
+    containerRef?.current?.scrollIntoView();
     if (room_id < 0) {
         return <></>
     }
@@ -135,6 +137,7 @@ export const Chatroom = () => {
                             <div className="column is-9 has-background-success-light" style={{ height: "100%", borderRadius: "10px", overflowY: "scroll" }}>
                                 {list}
                                 {chatTemp}
+                                <div ref={containerRef}/>
                             </div>
                         </div>
 

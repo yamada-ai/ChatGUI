@@ -9,7 +9,7 @@ from setting import *
 
 openai.api_key = GPT_API_KEY
 
-def get_api_response(param=None):
+def get_api_response(context:list):
     res = requests.get(url=api_url)
     return res.json()["slip"]["advice"]
 
