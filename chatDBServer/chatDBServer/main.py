@@ -10,6 +10,7 @@ from chatDBServer.api.read.get_user import handler as get_user_handler
 from chatDBServer.api.read.read_rooms import handler as read_rooms_handler
 from chatDBServer.api.read.read_chats import handler as read_chats_handler
 from chatDBServer.api.read.read_observation import handler as read_observation_handler
+from chatDBServer.api.read.get_patient_basic_info import handler as get_patient_basic_info_handler
 
 from chatDBServer.api.read.read_img import handler as read_img_handler
 
@@ -100,6 +101,10 @@ def read_chats(user_id, room_id):
 @app.get("/api/observation/{user_id}/{room_id}")
 def read_observation(user_id, room_id):
     return read_observation_handler(user_id, room_id)
+
+@app.get("/api/patient/basic/{user_id}/{room_id}")
+def get_patient_basic_info(user_id, room_id):
+    return get_patient_basic_info_handler(user_id, room_id)
 
 @app.get("/api/img/")
 def read_img_test():

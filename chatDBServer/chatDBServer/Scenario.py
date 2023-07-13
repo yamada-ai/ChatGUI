@@ -44,3 +44,21 @@ class ScenarioManager:
             return self.img_dict[sfile]
         else:
             return ""
+    
+    def extract_basic_info(self, user_id:int, room_id:int) -> dict:
+        scenario = self.read_patient_scenario(user_id, room_id)
+        basic_info = dict()
+        for line in scenario.splitlines():
+            if "氏名:" in line:
+                print(line.split(":"))
+                basic_info["name"] = line.split(":")[1].strip()
+            if "性別:" in line:
+                print(line.split(":"))
+                basic_info["sex"] = line.split(":")[1].strip()
+            if "年齢:" in line:
+                print(line.split(":"))
+                basic_info["age"] = line.split(":")[1].strip()
+            if "場面設定:" in line:
+                print(line.split(":"))
+                basic_info["config"] = line.split(":")[1].strip()
+        return basic_info

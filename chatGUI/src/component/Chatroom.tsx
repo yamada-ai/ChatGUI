@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState, useRef } from "react";
 import { UserContext } from "../contexts";
 import { Chat } from "./Chat";
+import {Information} from "./Information"
 import { postChat, getChats, postAudio, updatePatient, getImg } from "../api_wrapper";
 import { ReactMic } from "react-mic";
 
@@ -135,6 +136,12 @@ export const Chatroom = () => {
                     <div style={{ width: "100%", height: "80%" }}>
                         <div className="columns is-centered my-5" style={{ height: "100%" }} >
                             <div className="column is-9 has-background-success-light" style={{ height: "100%", borderRadius: "10px", overflowY: "scroll" }}>
+                                {/* 入室したよ */}
+                                <div className="level has-background-grey-lighter " style={{ height: "30px", borderRadius: "10px"}}>
+                                    <p className="level-item has-text-grey-darker">
+                                        患者が入室しました
+                                    </p>
+                                </div>
                                 {list}
                                 {chatTemp}
                                 <div ref={containerRef}/>
@@ -167,8 +174,8 @@ export const Chatroom = () => {
                                     </div>
                                     {/* 終了ボタン */}
                                     <div className="column is-narrow">
-                                        <button className="button has-background-danger-dark" style={{ width: "60px", height: "40px" }} onClick={() => clickFinish()}>
-                                            <p className="has-text-white">finish</p>
+                                        <button className="button has-background-danger-dark" style={{ width: "120px", height: "40px" }} onClick={() => clickFinish()}>
+                                            <p className="has-text-white">所見の入力へ</p>
                                         </button>
                                     </div>
                                 </div>
@@ -176,10 +183,10 @@ export const Chatroom = () => {
                         </div>
                         <div className="level" >
                             <div className="level-item m-0 ">
-                                <button className="button icon has-background-primary is-rounded has-text-white is-size-5" style={{ width: "120px", height: "40px" }} onClick={() => clickSendButton()}>
+                                <button className="button icon has-background-primary is-rounded has-text-white is-size-5" style={{ width: "150px", height: "40px" }} onClick={() => clickSendButton()}>
                                     {/* <i className ="fas fa-user"></i> */}
                                     <i className="fas fa-paper-plane"></i>
-                                    <p className="ml-3 ">Send</p>
+                                    <p className="ml-3 ">発話を送信</p>
                                 </button>
                             </div>
                         </div>
@@ -187,21 +194,7 @@ export const Chatroom = () => {
                 </div>
             </div>
             {/* 対話フロー説明領域 */}
-            <div className="column" style={{ height: "100%" }}>
-                {/* <p>医療面接の流れ!"!</p> */}
-                <div className="coulmns is-centered mt-6" style={{ height: "100%" }}>
-                    <div className="coulumn is-10 has-background-success-light p-4" style={{ height: "70%", borderRadius: "10px"}}>
-                        <p>医療面接の流れ</p>
-                        <p>1. 挨拶</p>
-                        <p>2. 名前の確認と自己紹介</p>
-                        <p>3. 主訴と現病歴について質問</p>
-                        <p>4. 補足事項を質問</p>
-                        <p>5. 要約，確認</p>
-                        <p>6. 診断と治療方針の伝達</p>
-                        <p>7. クロージング</p>
-                    </div>
-                </div>
-            </div>
+            <Information/>
         </div>
 
     );

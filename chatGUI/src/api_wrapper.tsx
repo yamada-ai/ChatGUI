@@ -113,6 +113,12 @@ export async function getChats(user_id:number, room_id:number):Promise<any>{
     return chats
 }
 
+export async function getPatientBacicInfo(user_id:number, room_id:number):Promise<any>{
+    const response = await client.get("/patient/basic/"+String(user_id)+"/"+String(room_id))
+    const basic_info = JSON.parse(response.data)
+    return basic_info
+}
+
 export async function postChat(user_id:number, room_id:number, turn:number, user_text:string, context:string, wavFilename:string):Promise<any>{
     const body = {
         "user_id" : user_id,
